@@ -28,7 +28,7 @@ export default function SelectPosterModal({
   posterSessionArea: PosterSessionArea;
 }): JSX.Element {
   const coveyTownController = useTownController();
-  const posterSessionAreController = usePosterSessionAreaController(posterSessionArea?.id);
+  const posterSessionAreaController = usePosterSessionAreaController(posterSessionArea?.id);
 
   const [title, setTitle] = useState<string | undefined>(posterSessionArea?.defaultTitle || '');
   const [posterFileContents, setImageContents] = useState<string | undefined>(undefined);
@@ -70,13 +70,43 @@ export default function SelectPosterModal({
   // found, then don't create the poster.
   // Toast some errors if the poster could not be created.
   const createPoster = useCallback(async () => {
+    if (title && posterFileContents && posterSessionAreaController) {
+      const request: PosterSessionAreaModel = {
+        id: posterSessionAreaController.id,
+        stars: 0,
+        imageContents: posterFileContents,
+        title: title,
+      };
+      try {
+        await coveyTownController.createPosterSessionArea(request);
+        toast({
+          title: 'Poster session set!',
+          status: 'success',
+        });
+        coveyTownController.unPause();
+      } catch (err) {
+        if (err instanceof Error) {
+          toast({
+            title: 'Unable to set poster title or image contents',
+            description: err.toString(),
+            status: 'error',
+          });
+        } else {
+          console.trace(err);
+          toast({
+            title: 'Unexpected Error',
+            status: 'error',
+          });
+        }
+      }
+    }
     // TODO
   }, [
     title,
     posterFileContents,
     setTitle,
     coveyTownController,
-    posterSessionAreController,
+    posterSessionAreaController,
     closeModal,
     toast,
   ]);
@@ -90,7 +120,7 @@ export default function SelectPosterModal({
       }}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Create a poster in {posterSessionAreController?.id} </ModalHeader>
+        <ModalHeader>Create a poster in {posterSessionAreaController?.id} </ModalHeader>
         <ModalCloseButton />
         <form
           onSubmit={ev => {
