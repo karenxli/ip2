@@ -74,8 +74,8 @@ export default function SelectPosterModal({
       const request: PosterSessionAreaModel = {
         id: posterSessionAreaController.id,
         stars: 0,
-        imageContents: posterFileContents,
-        title: title,
+        imageContents: '',
+        title: '',
       };
       try {
         await coveyTownController.createPosterSessionArea(request);
@@ -101,6 +101,7 @@ export default function SelectPosterModal({
       }
     }
     // TODO
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     title,
     posterFileContents,
