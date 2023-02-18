@@ -56,6 +56,10 @@ export function PosterImage({
   // increment the stars on a poster
   // but only increment if the current player has not already starred the poster
   function incStars() {
+    if (!controller.playersWhoStarred.includes(curPlayerId)) {
+      townController.incrementPosterSessionAreaStars(controller);
+      controller.addPlayerWhoStarred(curPlayerId);
+    }
     // TODO!
   }
 

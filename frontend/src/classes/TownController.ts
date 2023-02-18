@@ -658,7 +658,18 @@ export default class TownController extends (EventEmitter as new () => TypedEmit
   public async getPosterSessionAreaImageContents(
     posterSessionArea: PosterSessionAreaController,
   ): Promise<string> {
-    throw new Error('Unimplemented');
+    return new Promise<string>((resolve, reject) => {
+      if (
+        posterSessionArea &&
+        posterSessionArea.imageContents &&
+        isPosterSessionArea(posterSessionArea)
+      ) {
+        resolve(posterSessionArea.imageContents);
+      } else {
+        reject(new Error('Invalid poster session'));
+      }
+    });
+    //throw new Error('Unimplemented');
   }
 
   /**
@@ -669,7 +680,14 @@ export default class TownController extends (EventEmitter as new () => TypedEmit
   public async incrementPosterSessionAreaStars(
     posterSessionArea: PosterSessionAreaController,
   ): Promise<number> {
-    throw new Error('Unimplemented');
+    return new Promise<number>((resolve, reject) => {
+      if (posterSessionArea && isPosterSessionArea(posterSessionArea)) {
+        posterSessionArea.stars = posterSessionArea.stars + 1;
+        resolve(posterSessionArea.stars);
+      } else {
+        reject(new Error('Invalid poster session'));
+      }
+    });
   }
 
   /**
