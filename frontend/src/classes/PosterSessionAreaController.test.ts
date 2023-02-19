@@ -42,4 +42,42 @@ describe('PosterSessionAreaController', () => {
       expect(testArea.id).toEqual(existingID);
     });
   });
+
+  describe('Setting title property', () => {
+    it('updates the title property and emits a posterTitleChange event if the property changes', () => {
+      const newTitle = nanoid();
+      testArea.title = newTitle;
+      expect(mockListeners.posterTitleChange).toBeCalledWith(newTitle);
+      expect(testArea.title).toEqual(newTitle);
+    });
+    it('does not emit a posterTitleChange event if the title property does not change', () => {
+      testArea.title = `${testAreaModel.title}`;
+      expect(mockListeners.posterTitleChange).not.toBeCalled();
+    });
+  });
+  describe('Setting image contents property', () => {
+    it('updates the image contents property and emits a posterImageContentsChange event if the property changes', () => {
+      const newImageContents = nanoid();
+      testArea.imageContents = newImageContents;
+      expect(mockListeners.posterImageContentsChange).toBeCalledWith(newImageContents);
+      expect(testArea.imageContents).toEqual(newImageContents);
+    });
+    it('does not emit a image contents event if the image contents property does not change', () => {
+      testArea.imageContents = `${testAreaModel.imageContents}`;
+      expect(mockListeners.posterImageContentsChange).not.toBeCalled();
+    });
+  });
+  describe('Setting stars property', () => {
+    it('updates the stars property and emits a posterStarChange event if the property changes', () => {
+      const newStars = 59;
+      testArea.stars = newStars;
+      expect(mockListeners.posterStarChange).toBeCalledWith(newStars);
+      expect(testArea.imageContents).toEqual(newStars);
+    });
+    it('does not emit a image contents event if the image contents property does not change', () => {
+      // eslint-disable-next-line no-self-assign
+      testArea.stars = testArea.stars;
+      expect(mockListeners.posterImageContentsChange).not.toBeCalled();
+    });
+  });
 });
