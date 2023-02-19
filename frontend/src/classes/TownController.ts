@@ -440,18 +440,25 @@ export default class TownController extends (EventEmitter as new () => TypedEmit
         for (let i = 0; i < this._conversationAreasInternal.length; i++) {
           if (this._conversationAreasInternal[i].id == interactable.id) {
             if (
-              this._conversationAreasInternal[i].isEmpty() &&
-              interactable.occupantsByID.length != 0
+              this._conversationAreasInternal[i].occupants.length == 0 &&
+              interactable.occupantsByID.length != 0 // newly occupied
             ) {
+              // this.emit('conversationAreasChanged', this._conversationAreasInternal);
+              this._conversationAreasInternal[i].occupants =
+                interactable.occupantsByID as unknown as PlayerController[];
               this.emit('conversationAreasChanged', this._conversationAreasInternal);
             } else if (
-              !this._conversationAreasInternal[i].isEmpty() &&
+              this._conversationAreasInternal[i].occupants.length != 0 &&
               interactable.occupantsByID.length == 0
             ) {
+              this._conversationAreasInternal[i].occupants =
+                interactable.occupantsByID as unknown as PlayerController[];
               this.emit('conversationAreasChanged', this._conversationAreasInternal);
             }
             this._conversationAreasInternal[i].topic = interactable.topic;
-            // this._conversationAreasInternal[i].occupants = interactable.occupantsByID;
+
+            //this._conversationAreasInternal[i].occupants =
+            //interactable.occupantsByID as unknown as PlayerController[];
           }
         }
       } else if (isViewingArea(interactable)) {
