@@ -80,4 +80,10 @@ describe('PosterSessionAreaController', () => {
       expect(mockListeners.posterImageContentsChange).not.toBeCalled();
     });
   });
+  describe('posterSessionAreaModel', () => {
+    it('Carries through all of the properties', () => {
+      const model = testArea.posterSessionAreaModel();
+      expect(model).toEqual(testAreaModel);
+    });
+  });
 });
