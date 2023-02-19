@@ -424,7 +424,7 @@ export default class TownController extends (EventEmitter as new () => TypedEmit
      * be represented by a ViewingAreaController, PosterSessionAreaController or ConversationAreaController that this TownController has.
      *
      * If a conversation area transitions from empty to occupied (or occupied to empty), this handler will emit
-     * a conversationAreasChagned event to listeners of this TownController.
+     * a conversationAreasChanged event to listeners of this TownController.
      *
      * If the update changes properties of the interactable, the interactable is also expected to emit its own
      * events (@see ViewingAreaController and @see ConversationAreaController and @see PosterSessionAreaController)
@@ -437,7 +437,23 @@ export default class TownController extends (EventEmitter as new () => TypedEmit
           }
         }
       } else if (isConversationArea(interactable)) {
-        // do more things
+        for (let i = 0; i < this._conversationAreasInternal.length; i++) {
+          if (this._conversationAreasInternal[i].id == interactable.id) {
+            if (
+              this._conversationAreasInternal[i].isEmpty() &&
+              interactable.occupantsByID.length != 0
+            ) {
+              this.emit('conversationAreasChanged', this._conversationAreasInternal);
+            } else if (
+              !this._conversationAreasInternal[i].isEmpty() &&
+              interactable.occupantsByID.length == 0
+            ) {
+              this.emit('conversationAreasChanged', this._conversationAreasInternal);
+            }
+            this._conversationAreasInternal[i].topic = interactable.topic;
+            // this._conversationAreasInternal[i].occupants = interactable.occupantsByID;
+          }
+        }
       } else if (isViewingArea(interactable)) {
         for (let i = 0; i < this._viewingAreas.length; i++) {
           if (this._viewingAreas[i].id == interactable.id) {
