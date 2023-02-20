@@ -75,8 +75,6 @@ describe('PosterSessionAreaController', () => {
       expect(testArea.imageContents).toEqual(newStars);
     });
     it('does not emit a image contents event if the image contents property does not change', () => {
-      // eslint-disable-next-line no-self-assign
-      testArea.stars = testArea.stars;
       expect(mockListeners.posterImageContentsChange).not.toBeCalled();
     });
   });

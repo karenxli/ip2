@@ -457,8 +457,8 @@ export default class TownController extends (EventEmitter as new () => TypedEmit
             }
             this._conversationAreasInternal[i].topic = interactable.topic;
 
-            //this._conversationAreasInternal[i].occupants =
-            //interactable.occupantsByID as unknown as PlayerController[];
+            // this._conversationAreasInternal[i].occupants =
+            // interactable.occupantsByID as unknown as PlayerController[];
           }
         }
       } else if (isViewingArea(interactable)) {
